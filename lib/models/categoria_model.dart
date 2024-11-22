@@ -1,3 +1,4 @@
+//! Clase modelo para la entidad Categoria
 class CategoriaModel {
   // Atributos de la clase
   int id;
