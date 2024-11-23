@@ -31,7 +31,7 @@ class CategoriaControllers {
 
   // Metodo para crear una categoria (AGREGAR)
   Future<void> createCategoria(String nombre, String descripcion,
-      [String estado = 'activo']) async {
+      [String estado = 'Activo']) async {
     final response = await http.post(
       Uri.parse(url),
       headers: {"Content-Type": "application/json"}, // Cabecera de la peticion
@@ -49,8 +49,8 @@ class CategoriaControllers {
 
   // Metodo para actualizar una categoria (ACTUALIZAR)
   Future<void> updateCategoria(
-      int id, String nombre, String descripcion) async {
-    final response = await http.put(Uri.parse(url),
+      String id, String nombre, String descripcion) async {
+    final response = await http.put(Uri.parse('$url/$id'),
         headers: {
           "Content-Type": "application/json"
         }, // Cabecera de la peticion
@@ -66,8 +66,9 @@ class CategoriaControllers {
   }
 
   // Metodo para actualizar el estado de una categoria (ACTUALIZAR)
-  Future<void> updateEstadoCategoria(int id, String estado) async {
-    final response = await http.put(Uri.parse(url),
+  // Metodo para actualizar el estado de una categoria (ACTUALIZAR)
+  Future<void> updateEstadoCategoria(String id, String estado) async {
+    final response = await http.put(Uri.parse('$url/$id/estado'),
         headers: {
           "Content-Type": "application/json"
         }, // Cabecera de la peticion
