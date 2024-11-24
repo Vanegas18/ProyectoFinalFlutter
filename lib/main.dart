@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_final/screens/Categorias/categorias_screen.dart';
+import 'package:proyecto_final/screens/Inicio/home_screen.dart';
 import 'package:proyecto_final/screens/Productos/productos_screen.dart';
+import 'package:proyecto_final/screens/Inicio/dashboard_screen.dart';
 
-void main(List<String> args) {
-  runApp(const Principal());
+void main() {
+  runApp(MyApp());
 }
 
-class Principal extends StatefulWidget {
-  const Principal({super.key});
-
-  @override
-  State<Principal> createState() => _PrincipalState();
-}
-
-class _PrincipalState extends State<Principal> {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,7 +17,13 @@ class _PrincipalState extends State<Principal> {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      home: const ProductosScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => HomeScreen(),
+        '/dashboard': (context) => const DashboardScreen(),
+        '/productos': (context) => const ProductosScreen(),
+        '/categorias': (context) => const CategoriasScreen(),
+      },
     );
   }
 }
