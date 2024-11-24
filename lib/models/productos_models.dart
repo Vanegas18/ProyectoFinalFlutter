@@ -1,7 +1,7 @@
 //! Clase modelo para la entidad Productos
 class ProductosModels {
   // Atributos de la clase
-  final int id;
+  final String id;
   final String nombre;
   final String categoria;
   final String descripcion;

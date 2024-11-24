@@ -7,6 +7,8 @@ class ProductoControllers {
   // URL base
   static const String url = 'https://buildmart-1.onrender.com/api/productos';
 
+  // Método para obtener todas las categorías
+
   //! METODOS PARA PRODUCTOS
 
   // Metodo para obtener todos los productos (LISTAR)
@@ -32,7 +34,7 @@ class ProductoControllers {
   // Metodo para crear un producto (AGREGAR)
   Future<void> createProducto(String nombre, String categoria,
       String descripcion, double precio, int stock,
-      [String estado = 'activo']) async {
+      [String estado = 'Activo']) async {
     final response = await http.post(
       Uri.parse(url),
       headers: {"Content-Type": "application/json"}, // Cabecera de la peticion
@@ -45,16 +47,16 @@ class ProductoControllers {
         'estado': estado
       }), // Cuerpo de la peticion
     );
-    if (response.statusCode != 200) {
+    if (response.statusCode != 200 && response.statusCode != 201) {
       throw Exception(
           'Error al crear el producto'); // Lanzar un error si no se pudo crear el producto
     }
   }
 
   // Metodo para actualizar un producto (ACTUALIZAR)
-  Future<void> updateProducto(int id, String nombre, String categoria,
+  Future<void> updateProducto(String id, String nombre, String categoria,
       String descripcion, double precio, int stock) async {
-    final response = await http.put(Uri.parse(url),
+    final response = await http.put(Uri.parse('$url/$id'),
         headers: {
           "Content-Type": "application/json"
         }, // Cabecera de la peticion
@@ -73,8 +75,8 @@ class ProductoControllers {
   }
 
   // Metodo para actualizar el estado de un producto (ACTUALIZAR)
-  Future<void> updateEstadoProducto(int id, String estado) async {
-    final response = await http.put(Uri.parse(url),
+  Future<void> updateEstadoProducto(String id, String estado) async {
+    final response = await http.put(Uri.parse('$url/$id/estado'),
         headers: {
           "Content-Type": "application/json"
         }, // Cabecera de la peticion

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_final/screens/Categorias/categorias_screen.dart';
+import 'package:proyecto_final/screens/Productos/productos_screen.dart';
 
 void main(List<String> args) {
   runApp(const Principal());
@@ -21,7 +22,7 @@ class _PrincipalState extends State<Principal> {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      home: const CategoriasScreen(),
+      home: const ProductosScreen(),
     );
   }
 }

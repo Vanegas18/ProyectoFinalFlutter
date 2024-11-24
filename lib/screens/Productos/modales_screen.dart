@@ -1,51 +1,77 @@
-// widgets/categoria_modals.dart
-// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
+// ignore_for_file: use_build_context_synchronously, unused_element
 
 import 'package:flutter/material.dart';
 
-// Modal para registrar una nueva categoría
+// Modal para registrar un nuevo producto
 class RegisterModal extends StatelessWidget {
   final TextEditingController nombreController;
+  final TextEditingController categoriaController;
   final TextEditingController descripcionController;
+  final TextEditingController precioController;
+  final TextEditingController stockController;
   final Function registrar;
 
   const RegisterModal({
     super.key,
     required this.nombreController,
+    required this.categoriaController,
     required this.descripcionController,
+    required this.precioController,
+    required this.stockController,
     required this.registrar,
   });
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Agregar Categoría'),
+      title: const Text('Agregar Producto'),
       content: SingleChildScrollView(
         child: Column(
           children: [
-            // Campo para el nombre de la categoría
             TextFormField(
               controller: nombreController,
               decoration: const InputDecoration(
                 labelText: 'Nombre',
-                hintText: 'Ingrese el nombre de la categoría',
+                hintText: 'Ingrese el nombre del producto',
+                icon: Icon(Icons.shopping_cart),
+              ),
+            ),
+            TextFormField(
+              controller: categoriaController,
+              decoration: const InputDecoration(
+                labelText: 'Categoría',
+                hintText: 'Ingrese la categoría del producto',
                 icon: Icon(Icons.category),
               ),
             ),
-            // Campo para la descripción de la categoría
             TextFormField(
               controller: descripcionController,
               decoration: const InputDecoration(
                 labelText: 'Descripción',
-                hintText: 'Ingrese la descripción de la categoría',
+                hintText: 'Ingrese la descripción del producto',
                 icon: Icon(Icons.description),
+              ),
+            ),
+            TextFormField(
+              controller: precioController,
+              decoration: const InputDecoration(
+                labelText: 'Precio',
+                hintText: 'Ingrese el precio del producto',
+                icon: Icon(Icons.attach_money),
+              ),
+            ),
+            TextFormField(
+              controller: stockController,
+              decoration: const InputDecoration(
+                labelText: 'Stock',
+                hintText: 'Ingrese el stock del producto',
+                icon: Icon(Icons.inventory),
               ),
             ),
           ],
         ),
       ),
       actions: [
-        // Botón para registrar la categoría
         TextButton(
           onPressed: () async {
             await registrar();
@@ -53,7 +79,6 @@ class RegisterModal extends StatelessWidget {
           },
           child: const Text('Registrar'),
         ),
-        // Botón para cancelar el registro
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -65,60 +90,82 @@ class RegisterModal extends StatelessWidget {
   }
 }
 
-// Modal para editar una categoría existente
+// Modal para editar un producto
 class EditModal extends StatelessWidget {
   final TextEditingController nombreController;
+  final TextEditingController categoriaController;
   final TextEditingController descripcionController;
-  final TextEditingController estadoController;
+  final TextEditingController precioController;
+  final TextEditingController stockController;
   final Function actualizar;
 
   const EditModal({
     super.key,
     required this.nombreController,
+    required this.categoriaController,
     required this.descripcionController,
-    required this.estadoController,
+    required this.precioController,
+    required this.stockController,
     required this.actualizar,
   });
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Editar Categoría'),
+      title: const Text('Editar Producto'),
       content: SingleChildScrollView(
         child: Column(
           children: [
-            // Campo para el nombre de la categoría
+            // Campo para el nombre del producto
             TextFormField(
               controller: nombreController,
               decoration: const InputDecoration(
                 labelText: 'Nombre',
-                hintText: 'Ingrese el nombre de la categoría',
+                hintText: 'Ingrese el nombre del producto',
+                icon: Icon(Icons.shopping_cart),
+              ),
+            ),
+            // Campo para la categoría del producto
+            TextFormField(
+              controller: categoriaController,
+              decoration: const InputDecoration(
+                labelText: 'Categoría',
+                hintText: 'Ingrese la categoría del producto',
                 icon: Icon(Icons.category),
               ),
             ),
-            // Campo para la descripción de la categoría
+            // Campo para la descripción del producto
             TextFormField(
               controller: descripcionController,
               decoration: const InputDecoration(
                 labelText: 'Descripción',
-                hintText: 'Ingrese la descripción de la categoría',
+                hintText: 'Ingrese la descripción del producto',
                 icon: Icon(Icons.description),
               ),
             ),
-            // Campo para el estado de la categoría (deshabilitado)
+            // Campo para el precio del producto
             TextFormField(
-              controller: estadoController,
+              controller: precioController,
               decoration: const InputDecoration(
-                labelText: 'Estado',
-                icon: Icon(Icons.check_circle),
+                labelText: 'Precio',
+                hintText: 'Ingrese el precio del producto',
+                icon: Icon(Icons.attach_money),
               ),
-              enabled: false,
+            ),
+            // Campo para el stock del producto
+            TextFormField(
+              controller: stockController,
+              decoration: const InputDecoration(
+                labelText: 'Stock',
+                hintText: 'Ingrese el stock del producto',
+                icon: Icon(Icons.inventory),
+              ),
             ),
           ],
         ),
       ),
       actions: [
-        // Botón para actualizar la categoría
+        // Botón para actualizar el producto
         TextButton(
           onPressed: () async {
             await actualizar();
@@ -138,29 +185,26 @@ class EditModal extends StatelessWidget {
   }
 }
 
-// Modal para actualizar el estado de una categoría
-class UpdateStateModal extends StatefulWidget {
+// Modal para actualizar el estado de un producto
+class ActualizarEstadoProducto extends StatefulWidget {
   final String estadoInicial;
   final Function(String) cambiarEstado;
 
-  const UpdateStateModal({
-    super.key,
-    required this.estadoInicial,
-    required this.cambiarEstado,
-  });
+  const ActualizarEstadoProducto(
+      {super.key, required this.estadoInicial, required this.cambiarEstado});
 
   @override
-  _UpdateStateModalState createState() => _UpdateStateModalState();
+  State<ActualizarEstadoProducto> createState() =>
+      ActualizarEstadoProductoState();
 }
 
-// Estado del modal para actualizar el estado de una categoría
-class _UpdateStateModalState extends State<UpdateStateModal> {
+class ActualizarEstadoProductoState extends State<ActualizarEstadoProducto> {
   late String estadoSeleccionado;
 
   @override
   void initState() {
     super.initState();
-    estadoSeleccionado = widget.estadoInicial.toLowerCase();
+    estadoSeleccionado = widget.estadoInicial;
   }
 
   @override
@@ -170,17 +214,17 @@ class _UpdateStateModalState extends State<UpdateStateModal> {
       content: SingleChildScrollView(
         child: Column(
           children: [
-            // Dropdown para seleccionar el estado de la categoría
+            // Dropdown para seleccionar el estado del producto
             DropdownButtonFormField<String>(
               value: estadoSeleccionado,
               items: const [
                 DropdownMenuItem(
-                  value: 'activo',
-                  child: Text('Activo'),
+                  value: 'Inactivo',
+                  child: Text('Inactivo'),
                 ),
                 DropdownMenuItem(
-                  value: 'inactivo',
-                  child: Text('Inactivo'),
+                  value: 'Activo',
+                  child: Text('Activo'),
                 ),
               ],
               onChanged: (value) {
@@ -190,7 +234,7 @@ class _UpdateStateModalState extends State<UpdateStateModal> {
               },
               decoration: const InputDecoration(
                 labelText: 'Estado',
-                hintText: 'Seleccione el estado de la categoría',
+                hintText: 'Seleccione el estado del producto',
                 icon: Icon(Icons.check_circle),
               ),
             ),
@@ -198,7 +242,7 @@ class _UpdateStateModalState extends State<UpdateStateModal> {
         ),
       ),
       actions: [
-        // Botón para actualizar el estado
+        // Botón para actualizar el estado del producto
         TextButton(
           onPressed: () async {
             await widget.cambiarEstado(estadoSeleccionado);
