@@ -122,13 +122,13 @@ class ProductosTable extends StatelessWidget {
                         ),
                       ),
                     ],
-                    rows: productos.map((productos) {
+                    rows: productos.map((producto) {
                       return DataRow(cells: [
                         DataCell(Container(
                           width: 100.0,
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            productos.nombre,
+                            producto.nombre,
                             style: const TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.bold),
@@ -138,7 +138,7 @@ class ProductosTable extends StatelessWidget {
                           width: 100.0,
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            productos.categoria,
+                            producto.categoria,
                             style: const TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.bold),
@@ -148,7 +148,7 @@ class ProductosTable extends StatelessWidget {
                           width: 100.0,
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            productos.descripcion,
+                            producto.descripcion,
                             style: const TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.bold),
@@ -158,7 +158,7 @@ class ProductosTable extends StatelessWidget {
                           width: 100.0,
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            productos.precio.toString(),
+                            producto.precio.toString(),
                             style: const TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.bold),
@@ -168,7 +168,7 @@ class ProductosTable extends StatelessWidget {
                           width: 100.0,
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            productos.stock.toString(),
+                            producto.stock.toString(),
                             style: const TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.bold),
@@ -178,10 +178,14 @@ class ProductosTable extends StatelessWidget {
                           width: 100.0,
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            productos.estado,
-                            style: const TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold),
+                            producto.estado,
+                            style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold,
+                              color: producto.estado == 'Inactivo'
+                                  ? Colors.red
+                                  : Colors.lightBlue,
+                            ),
                           ),
                         )),
                         DataCell(
@@ -192,12 +196,12 @@ class ProductosTable extends StatelessWidget {
                                     const Icon(Icons.edit, color: Colors.blue),
                                 onPressed: () {
                                   onEdit(
-                                    productos.id,
-                                    productos.nombre,
-                                    productos.categoria,
-                                    productos.descripcion,
-                                    productos.precio,
-                                    productos.stock,
+                                    producto.id,
+                                    producto.nombre,
+                                    producto.categoria,
+                                    producto.descripcion,
+                                    producto.precio,
+                                    producto.stock,
                                   );
                                 },
                               ),
@@ -206,8 +210,8 @@ class ProductosTable extends StatelessWidget {
                                     color: Colors.red),
                                 onPressed: () {
                                   onUpdateState(
-                                    productos.id,
-                                    productos.estado,
+                                    producto.id,
+                                    producto.estado,
                                   );
                                 },
                               ),
