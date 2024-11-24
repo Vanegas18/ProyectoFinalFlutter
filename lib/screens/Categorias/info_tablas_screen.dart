@@ -1,4 +1,6 @@
 // widgets/categoria_table.dart
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:proyecto_final/models/categoria_model.dart';
 
@@ -37,9 +39,8 @@ class CategoriaTable extends StatelessWidget {
                 child: DataTable(
                   columnSpacing: 40.0,
                   dividerThickness: 2.0,
-                  headingRowColor: MaterialStateProperty.all(Colors.black),
-                  dataRowColor:
-                      MaterialStateProperty.all(Colors.deepPurple[50]),
+                  headingRowColor: WidgetStateProperty.all(Colors.black),
+                  dataRowColor: WidgetStateProperty.all(Colors.deepPurple[50]),
                   dataRowHeight: 80.0,
                   columns: const [
                     // Definición de columnas
