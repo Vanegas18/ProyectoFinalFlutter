@@ -29,7 +29,7 @@ class DashboardScreen extends StatelessWidget {
               const Icon(
                 Icons.dashboard,
                 size: 100,
-                color: Colors.white,
+                color: Colors.blue,
               ),
               const SizedBox(height: 20),
               ElevatedButton(
@@ -76,7 +76,7 @@ class DashboardScreen extends StatelessWidget {
               const SizedBox(height: 300),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/home');
                 },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.blue,

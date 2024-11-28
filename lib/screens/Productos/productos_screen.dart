@@ -22,6 +22,22 @@ class _ProductosScreenState extends State<ProductosScreen> {
   // Lista de productos y categorías
   List<ProductosModels> productos = [];
 
+  // Controlador para el campo de búsqueda
+  final TextEditingController _searchController = TextEditingController();
+  String _searchText = "";
+
+  // Método para filtrar productos por nombre
+  List<ProductosModels> _filterProductos() {
+    if (_searchText.isEmpty) {
+      return productos;
+    } else {
+      return productos
+          .where((producto) =>
+              producto.nombre.toLowerCase().contains(_searchText.toLowerCase()))
+          .toList();
+    }
+  }
+
   //! MÉTODOS
 
   // Método initState para inicializar el estado
@@ -204,46 +220,66 @@ class _ProductosScreenState extends State<ProductosScreen> {
   //! RENDERIZADO
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const ProductoAppBar(),
-      body: FutureBuilder<List<ProductosModels>>(
-          future: _productoControllers.getProductos(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
-              return const Center(
-                child: Text('Error al obtener los productos'),
-              );
-            } else {
-              final productos = snapshot.data!;
-              return Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 20.0),
-                    ProductosAddBtn(onPressed: showRegisterModal),
-                    const SizedBox(height: 20.0),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushNamed(context, '/dashboard');
+        return true;
+      },
+      child: Scaffold(
+        appBar: const ProductoAppBar(),
+        body: FutureBuilder<List<ProductosModels>>(
+            future: _productoControllers.getProductos(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasError) {
+                return const Center(
+                  child: Text('Error al obtener los productos'),
+                );
+              } else {
+                final productos = _filterProductos();
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20.0),
+                      TextField(
+                        controller: _searchController,
+                        decoration: const InputDecoration(
+                          labelText: 'Buscar producto',
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(Icons.search),
+                        ),
+                        onSubmitted: (value) {
+                          setState(() {
+                            _searchText = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      ProductosAddBtn(onPressed: showRegisterModal),
+                      const SizedBox(height: 20.0),
 
-                    // Listado de productos
-                    ProductosTable(
-                      productos: productos,
-                      onEdit:
-                          (id, nombre, categoria, descripcion, precio, stock) {
-                        showEditModal(
-                            id, nombre, categoria, descripcion, precio, stock);
-                      },
-                      onUpdateState: (id, estado) {
-                        showUpdateStateModal(id, estado);
-                      },
-                    )
-                  ],
-                ),
-              );
-            }
-          }),
+                      // Listado de productos
+                      ProductosTable(
+                        productos: productos,
+                        onEdit: (id, nombre, categoria, descripcion, precio,
+                            stock) {
+                          showEditModal(id, nombre, categoria, descripcion,
+                              precio, stock);
+                        },
+                        onUpdateState: (id, estado) {
+                          showUpdateStateModal(id, estado);
+                        },
+                      )
+                    ],
+                  ),
+                );
+              }
+            }),
+      ),
     );
   }
 }

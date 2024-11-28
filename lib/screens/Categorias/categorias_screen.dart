@@ -23,6 +23,8 @@ class _CategoriasScreenState extends State<CategoriasScreen> {
 
   // Lista de categorias
   List<CategoriaModel> categorias = []; // Aquí se guardaran las categorias
+  TextEditingController _searchController = TextEditingController();
+  List<CategoriaModel> _filteredCategorias = [];
 
   //! MÉTODOS
 
@@ -31,6 +33,16 @@ class _CategoriasScreenState extends State<CategoriasScreen> {
   void initState() {
     super.initState();
     _listadoCategorias(); // Llamar al método para obtener las categorias
+  }
+
+  void _filterCategorias() {
+    setState(() {
+      _filteredCategorias = categorias
+          .where((categoria) => categoria.nombre
+              .toLowerCase()
+              .contains(_searchController.text.toLowerCase()))
+          .toList();
+    });
   }
 
   // Método para obtener las categorias
@@ -173,44 +185,64 @@ class _CategoriasScreenState extends State<CategoriasScreen> {
   //! Renderizar la vista
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CategoriaAppBar(),
-      //-------------------------
-      body: FutureBuilder<List<CategoriaModel>>(
-        future: _categoriaControllers.getCategorias(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            return const Center(
-              child: Text('Error al obtener las categorias'),
-            );
-          } else {
-            final categorias = snapshot.data!;
-            return Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: [
-                  const SizedBox(height: 20.0),
-                  CategoriaAddButton(onPressed: showRegisterModal),
-                  const SizedBox(height: 30.0),
-                  //-------------------------
-                  CategoriaTable(
-                    categorias: categorias,
-                    onEdit: (id, nombre, descripcion, estado) {
-                      showEditModal(id, nombre, descripcion, estado);
-                    },
-                    onUpdateState: (id, estado) {
-                      showUpdateStateModal(id, estado);
-                    },
-                  )
-                ],
-              ),
-            );
-          }
-        },
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushNamed(context, '/dashboard');
+        return true;
+      },
+      child: Scaffold(
+        appBar: const CategoriaAppBar(),
+        //-------------------------
+        body: FutureBuilder<List<CategoriaModel>>(
+          future: _categoriaControllers.getCategorias(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              return const Center(
+                child: Text('Error al obtener las categorias'),
+              );
+            } else {
+              final categorias = snapshot.data!;
+              return Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20.0),
+                    TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        labelText: 'Buscar categoría',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.search),
+                      ),
+                      onSubmitted: (value) {
+                        _filterCategorias();
+                      },
+                    ),
+                    const SizedBox(height: 20.0),
+                    CategoriaAddButton(onPressed: showRegisterModal),
+                    const SizedBox(height: 30.0),
+                    //-------------------------
+                    CategoriaTable(
+                      categorias: _filteredCategorias.isEmpty
+                          ? categorias
+                          : _filteredCategorias,
+                      onEdit: (id, nombre, descripcion, estado) {
+                        showEditModal(id, nombre, descripcion, estado);
+                      },
+                      onUpdateState: (id, estado) {
+                        showUpdateStateModal(id, estado);
+                      },
+                    )
+                  ],
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }

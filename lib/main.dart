@@ -3,6 +3,7 @@ import 'package:proyecto_final/screens/Categorias/categorias_screen.dart';
 import 'package:proyecto_final/screens/Inicio/home_screen.dart';
 import 'package:proyecto_final/screens/Productos/productos_screen.dart';
 import 'package:proyecto_final/screens/Inicio/dashboard_screen.dart';
+import 'package:proyecto_final/screens/Sesion/inicio_sesion_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +22,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => HomeScreen(),
+        '/': (context) => const InicioSesionScreen(),
+        '/home': (context) => const HomeScreen(),
         '/dashboard': (context) => const DashboardScreen(),
         '/productos': (context) => const ProductosScreen(),
         '/categorias': (context) => const CategoriasScreen(),
