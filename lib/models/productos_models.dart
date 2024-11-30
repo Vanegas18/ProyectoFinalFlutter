@@ -26,7 +26,7 @@ class ProductosModels {
       nombre: json['nombre'] ?? '',
       categoria: json['categoria'] ?? '',
       descripcion: json['descripcion'] ?? '',
-      precio: json['precio'] ?? '',
+      precio: (json['precio'] as num).toDouble(), // Convertir a double
       stock: json['stock'] ?? '',
       estado: json['estado'] ?? '',
     );
